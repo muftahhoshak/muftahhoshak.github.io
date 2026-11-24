@@ -177,3 +177,26 @@ table.adm th{font-size:12px;color:var(--muted);font-weight:600}
 .reqcta .btn{background:var(--brand);border-color:var(--brand);color:#fff;height:42px}
 .reqpage{max-width:560px;margin:0 auto;padding:18px 16px 60px;display:flex;flex-direction:column;gap:14px}
 @media (max-width:640px){.reqcta b{font-size:14px}.reqcta .btn{width:100%}}
+
+/* ---------- الخلفية + التصميم الزجاجي ---------- */
+html{background:#EEF5F2}
+body{background:transparent!important}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:url("bg.svg") center bottom/cover no-repeat}
+body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(244,246,245,.25) 0%,rgba(244,246,245,.1) 60%,rgba(244,246,245,0) 100%);pointer-events:none}
+.top{background:rgba(255,255,255,.55);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid rgba(255,255,255,.7)}
+.card,.panel,.search,select.sel,.chip,.spec,.owner,.paperbox,.empty,.btn:not(.primary):not(.dark):not(.wa):not(.danger),.round{
+  background:rgba(255,255,255,.6)!important;
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  border:1px solid rgba(255,255,255,.75)!important;
+  box-shadow:0 8px 24px rgba(16,33,43,.08)}
+.chip.on{background:rgba(228,242,237,.85)!important;border-color:var(--brand)!important}
+.seg{background:rgba(255,255,255,.35);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.7)}
+.seg button.on{background:rgba(255,255,255,.9)}
+.mapbox{border:1px solid rgba(255,255,255,.8);box-shadow:0 10px 30px rgba(16,33,43,.12)}
+.card .ph{border-bottom:1px solid rgba(255,255,255,.6)}
+.contact{background:rgba(255,255,255,.6);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-top:1px solid rgba(255,255,255,.7)}
+.reqcta{background:rgba(16,33,43,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.15)}
+.sheet .desc{background:rgba(255,255,255,.5);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:12px 14px}
+label.f input,label.f select,label.f textarea{background:rgba(255,255,255,.85)}
+#demoBar .msg{backdrop-filter:blur(12px)}
+@media (max-width:640px){body::before{background-size:200% auto;background-color:#DDEFEA}}

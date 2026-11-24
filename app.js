@@ -88,7 +88,7 @@
 
   function render() {
     const r = filtered();
-    const cta = `<div class="reqcta"><div><b>ما لقيتش اللي تبيه؟</b><span>قولّنا شنو تدور عليه، ونتصلوا بيك أول ما يجي.</span></div><a class="btn" href="#/request">اطلب عقارك</a></div>`;
+    const cta = `<div class="reqcta"><div><b>ما لقيتش اللي تبيه؟</b><span>قولّنا شنو تدور عليه، ونتصلوا بيك أول ما يجي.</span></div><a class="btn primary" href="#/request">اطلب عقارك</a></div>`;
     $("#list").innerHTML = `<div class="count">${r.length} عرض</div>` +
       (r.length ? r.map(cardHTML).join("") + cta : `<div class="empty">ما فيش عروض بالبحث هذا. جرّب تغيّر الفلاتر.</div>` + cta);
     drawPins(r);
