@@ -59,7 +59,21 @@
   }
 
   // الخلفية تتبدل حسب نوع العقار (الشقق والكل: المدينة)
-  function setBg(kind) { if (kind && kind !== "apartment") document.body.dataset.kind = kind; else delete document.body.dataset.kind; }
+  const HERO = {
+    "": ["مفتاح حوشك الجاي… عندنا", "شقق، بيوت، فيلات، أراضي ومحلات للبيع والإيجار في ليبيا"],
+    apartment: ["شقق للبيع والإيجار", "شقق جاهزة في أحسن المناطق"],
+    house: ["بيوت وحيشان", "بيوت أرضية لعيلتك"],
+    villa: ["فيلات راقية", "فخامة وراحة ومساحة"],
+    land: ["أراضي للبيع", "ابني حلمك من الأساس"],
+    shop: ["محلات تجارية", "مواقع تجارية في شوارع حيوية"],
+    office: ["مكاتب", "مكاتب لشغلك وشركتك"],
+    farm: ["مزارع", "أرض خضرا وهدوء"]
+  };
+  function setBg(kind) {
+    if (kind && kind !== "apartment") document.body.dataset.kind = kind; else delete document.body.dataset.kind;
+    const h = HERO[kind || ""] || HERO[""];
+    $("#heroT").textContent = h[0]; $("#heroS").textContent = h[1];
+  }
 
   function filtered() {
     const q = f.q.replace(/^0+/, "");
@@ -223,6 +237,7 @@
     const m = location.hash.match(/^#\/p\/(\d+)/);
     const onDetail = !!m, onReq = location.hash === "#/request";
     $("#home").classList.toggle("hidden", onDetail || onReq);
+    $("#hero").classList.toggle("hidden", onDetail || onReq);
     $("#detail").classList.toggle("hidden", !onDetail);
     $("#request").classList.toggle("hidden", !onReq);
     $("#fab").classList.toggle("hidden", onDetail);
