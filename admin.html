@@ -67,7 +67,7 @@
         <label class="f">نوع العرض<select id="deal"><option value="sale">بيع</option><option value="rent">إيجار</option></select></label>
         <label class="f">نوع العقار<select id="kind"></select></label>
         <label class="f">المدينة <span class="req">*</span><select id="city"></select></label>
-        <label class="f">المنطقة / الحي <span class="req">*</span><input id="area" placeholder="مثلاً: الكيش"></label>
+        <label class="f">المنطقة / الحي <span class="req">*</span><input id="area" list="areaList" autocomplete="off" placeholder="اختار من القائمة أو اكتب"><datalist id="areaList"></datalist></label>
         <label class="f">السعر (د.ل) <span class="req">*</span><input id="price" inputmode="numeric" placeholder="0"></label>
         <label class="f" id="periodBox">الإيجار كل<select id="rent_period"><option value="month">شهر</option><option value="year">سنة</option></select></label>
         <label class="f">المساحة (م²) <span class="req">*</span><input id="size_m2" inputmode="numeric"></label>

@@ -20,7 +20,7 @@
   ];
 
   let all = [];
-  const f = { q: "", city: "", deal: "", kind: "", sort: "new" };
+  const f = { q: "", city: "", area: "", deal: "", kind: "", sort: "new" };
   let map, markers = {}, miniMap;
 
   // ---------- تحميل ----------
@@ -43,14 +43,25 @@
     kinds.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; kinds.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === b)); f.kind = b.dataset.v; render(); };
     $("#deal").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; $("#deal").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); f.deal = b.dataset.v; render(); };
     $("#q").oninput = (e) => { f.q = e.target.value.trim(); render(); };
-    $("#city").onchange = (e) => { f.city = e.target.value; render(); };
+    $("#city").onchange = (e) => {
+      f.city = e.target.value; f.area = "";
+      const list = (C.AREAS && C.AREAS[f.city]) || [];
+      const sel = $("#areaSel");
+      // الأحياء من القائمة + أي منطقة فيها عروض ومش في القائمة
+      const extra = [...new Set(all.filter((l) => l.city === f.city && l.area && !list.includes(l.area)).map((l) => l.area))];
+      const opts = list.concat(extra);
+      sel.innerHTML = `<option value="">كل المناطق</option>` + opts.map((a) => `<option>${esc(a)}</option>`).join("");
+      sel.classList.toggle("hidden", !f.city || !opts.length);
+      render();
+    };
+    $("#areaSel").onchange = (e) => { f.area = e.target.value; render(); };
     $("#sort").onchange = (e) => { f.sort = e.target.value; render(); };
   }
 
   function filtered() {
     const q = f.q.replace(/^0+/, "");
     let r = all.filter((l) => l.status === "available" &&
-      (!f.city || l.city === f.city) && (!f.deal || l.deal === f.deal) && (!f.kind || l.kind === f.kind) &&
+      (!f.city || l.city === f.city) && (!f.area || l.area === f.area) && (!f.deal || l.deal === f.deal) && (!f.kind || l.kind === f.kind) &&
       (!f.q || [l.title, l.area, l.city, l.description].join(" ").includes(f.q) || (q && String(l.id) === q)));
     if (f.sort === "low") r.sort((a, b) => a.price - b.price);
     else if (f.sort === "high") r.sort((a, b) => b.price - a.price);

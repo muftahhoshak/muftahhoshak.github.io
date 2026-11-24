@@ -65,6 +65,11 @@
   // ---------- النموذج ----------
   C.CITIES.forEach((c) => $("#city").insertAdjacentHTML("beforeend", `<option>${esc(c)}</option>`));
   Object.entries(KINDS).forEach(([k, v]) => $("#kind").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`));
+  function fillAreas() {
+    const list = (C.AREAS && C.AREAS[$("#city").value]) || [];
+    $("#areaList").innerHTML = list.map((a) => `<option value="${esc(a)}"></option>`).join("");
+  }
+  $("#city").addEventListener("change", () => { $("#area").value = ""; fillAreas(); });
   $("#deal").onchange = () => $("#periodBox").classList.toggle("hidden", $("#deal").value !== "rent");
   const FIELDS = ["title", "deal", "kind", "city", "area", "price", "rent_period", "size_m2", "rooms", "baths", "floor", "description"];
 
@@ -75,6 +80,7 @@
     FIELDS.forEach((k) => ($("#" + k).value = r && r[k] != null ? r[k] : ""));
     if (!r) { $("#deal").value = "sale"; $("#kind").value = "apartment"; $("#city").value = C.CITIES[0]; $("#rent_period").value = "month"; }
     $("#featured").checked = !!(r && r.featured);
+    fillAreas();
     $("#deal").onchange();
     photos = (r && r.images ? r.images : []).map((url) => ({ url }));
     drawThumbs();
