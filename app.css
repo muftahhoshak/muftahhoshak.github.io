@@ -200,3 +200,20 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradi
 label.f input,label.f select,label.f textarea{background:rgba(255,255,255,.85)}
 #demoBar .msg{backdrop-filter:blur(12px)}
 @media (max-width:640px){body::before{background-size:200% auto;background-color:#DDEFEA}}
+
+/* ---------- نسخة أهدى للعين ---------- */
+body::before{opacity:.38;filter:saturate(.6) blur(1.5px)}
+body::after{background:linear-gradient(180deg,rgba(246,248,247,.6) 0%,rgba(246,248,247,.35) 55%,rgba(246,248,247,.15) 100%)}
+.card,.panel,.search,select.sel,.chip,.spec,.owner,.paperbox,.empty,.btn:not(.primary):not(.dark):not(.wa):not(.danger),.round{
+  background:rgba(255,255,255,.82)!important;box-shadow:0 4px 14px rgba(16,33,43,.06)}
+.top,.contact{background:rgba(255,255,255,.8)}
+.reqcta{background:rgba(16,33,43,.9)}
+.sheet .desc{background:rgba(255,255,255,.78)}
+
+/* خلفية حسب نوع العقار */
+body[data-kind="house"]::before{background-image:url("bg-house.svg")}
+body[data-kind="villa"]::before{background-image:url("bg-villa.svg")}
+body[data-kind="land"]::before{background-image:url("bg-land.svg")}
+body[data-kind="shop"]::before{background-image:url("bg-shop.svg")}
+body[data-kind="office"]::before{background-image:url("bg-office.svg")}
+body[data-kind="farm"]::before{background-image:url("bg-farm.svg")}

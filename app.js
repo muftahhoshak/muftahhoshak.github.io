@@ -40,7 +40,7 @@
     const kinds = $("#kinds");
     kinds.innerHTML = `<button class="chip on" data-v="">الكل</button>` +
       Object.entries(KINDS).map(([k, v]) => `<button class="chip" data-v="${k}">${v}</button>`).join("");
-    kinds.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; kinds.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === b)); f.kind = b.dataset.v; render(); };
+    kinds.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; kinds.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === b)); f.kind = b.dataset.v; setBg(f.kind); render(); };
     $("#deal").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; $("#deal").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); f.deal = b.dataset.v; render(); };
     $("#q").oninput = (e) => { f.q = e.target.value.trim(); render(); };
     $("#city").onchange = (e) => {
@@ -57,6 +57,9 @@
     $("#areaSel").onchange = (e) => { f.area = e.target.value; render(); };
     $("#sort").onchange = (e) => { f.sort = e.target.value; render(); };
   }
+
+  // الخلفية تتبدل حسب نوع العقار (الشقق والكل: المدينة)
+  function setBg(kind) { if (kind && kind !== "apartment") document.body.dataset.kind = kind; else delete document.body.dataset.kind; }
 
   function filtered() {
     const q = f.q.replace(/^0+/, "");
@@ -223,9 +226,9 @@
     $("#detail").classList.toggle("hidden", !onDetail);
     $("#request").classList.toggle("hidden", !onReq);
     $("#fab").classList.toggle("hidden", onDetail);
-    if (onReq) { $("#rMsg").innerHTML = ""; window.scrollTo(0, 0); document.title = "اطلب عقارك | مفتاح حوشك"; return; }
-    if (onDetail) { showDetail(m[1]); window.scrollTo(0, 0); }
-    else { document.title = "مفتاح حوشك | عقارات للبيع والإيجار في ليبيا"; if (map) setTimeout(() => map.invalidateSize(), 50); }
+    if (onReq) { setBg(""); $("#rMsg").innerHTML = ""; window.scrollTo(0, 0); document.title = "اطلب عقارك | مفتاح حوشك"; return; }
+    if (onDetail) { const l = all.find((x) => String(x.id) === m[1]); setBg(l && l.kind); showDetail(m[1]); window.scrollTo(0, 0); }
+    else { setBg(f.kind); document.title = "مفتاح حوشك | عقارات للبيع والإيجار في ليبيا"; if (map) setTimeout(() => map.invalidateSize(), 50); }
   }
 
   (async function start() {

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DDEFEA"/><stop offset=".55" stop-color="#EEF5F2"/><stop offset="1" stop-color="#F7F4EC"/></linearGradient>
+<radialGradient id="sun" cx=".78" cy=".22" r=".35"><stop offset="0" stop-color="#FFE7B8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE7B8" stop-opacity="0"/></radialGradient>
+<pattern id="win" width="22" height="26" patternUnits="userSpaceOnUse"><rect x="6" y="6" width="10" height="12" rx="1.5" fill="#FFFFFF" opacity=".55"/></pattern>
+<pattern id="glass" width="30" height="20" patternUnits="userSpaceOnUse"><rect x="2" y="2" width="26" height="16" fill="#FFFFFF" opacity=".35"/></pattern></defs>
+<rect width="1440" height="900" fill="url(#sky)"/><rect width="1440" height="900" fill="url(#sun)"/><circle cx="1120" cy="200" r="70" fill="#FFF1D2" opacity=".8"/>
+<g fill="#FFFFFF" opacity=".7"><ellipse cx="260" cy="170" rx="120" ry="26"/><ellipse cx="330" cy="150" rx="70" ry="30"/><ellipse cx="820" cy="110" rx="100" ry="20"/></g>
+<path d="M0 640 Q360 600 720 640 T1440 620 V900 H0Z" fill="#B9D8CE"/>
+<path d="M0 720 Q400 690 800 720 T1440 700 V900 H0Z" fill="#9CC7B9"/>
+<g stroke="#7FB5A3" stroke-width="5" opacity=".9" fill="none"><path d="M0 780 Q500 760 1440 790"/><path d="M0 820 Q500 800 1440 830"/><path d="M0 860 Q500 840 1440 870"/></g>
+<g><rect x="980" y="600" width="200" height="130" fill="#6FAA97"/><path d="M965 605 L1080 540 L1195 605Z" fill="#4F8B78"/><rect x="1060" y="660" width="40" height="70" rx="20" fill="#3F7A68"/></g>
+<g fill="#5E9C88"><circle cx="420" cy="680" r="42"/><circle cx="460" cy="665" r="32"/><rect x="434" y="700" width="10" height="50" fill="#4F8B78"/>
+<circle cx="640" cy="690" r="38"/><circle cx="676" cy="676" r="28"/><rect x="652" y="708" width="10" height="44" fill="#4F8B78"/></g><g fill="#3F7A68"><rect x="160" y="640" width="8" height="180" rx="4"/><path d="M164 640 q-60 -10 -80 30 q40 -25 80 -26z M164 640 q60 -10 80 30 q-40 -25 -80 -26z M164 640 q-30 -45 -70 -40 q40 5 70 42z M164 640 q30 -45 70 -40 q-40 5 -70 42z"/></g><g fill="#3F7A68"><rect x="260" y="670" width="8" height="150" rx="4"/><path d="M264 670 q-60 -10 -80 30 q40 -25 80 -26z M264 670 q60 -10 80 30 q-40 -25 -80 -26z M264 670 q-30 -45 -70 -40 q40 5 70 42z M264 670 q30 -45 70 -40 q-40 5 -70 42z"/></g><g fill="#3F7A68"><rect x="1300" y="630" width="8" height="190" rx="4"/><path d="M1304 630 q-60 -10 -80 30 q40 -25 80 -26z M1304 630 q60 -10 80 30 q-40 -25 -80 -26z M1304 630 q-30 -45 -70 -40 q40 5 70 42z M1304 630 q30 -45 70 -40 q-40 5 -70 42z"/></g><rect x="0" y="880" width="1440" height="20" fill="#4F8B78"/></svg>
