@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مفتاح حوشك | عقارات للبيع والإيجار في ليبيا</title>
+<meta name="description" content="مفتاح حوشك: شقق وبيوت وأراضي ومحلات للبيع والإيجار في ليبيا، مع الموقع على الخريطة وتواصل مباشر بالاتصال أو الواتساب.">
+<meta name="theme-color" content="#0B7A5E">
+<meta property="og:title" content="مفتاح حوشك | عقارات للبيع والإيجار">
+<meta property="og:description" content="مفتاح حوشك الجاي… عندنا">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#/" class="brand" aria-label="مفتاح حوشك - الرئيسية">
+      <span class="mark"><img src="icons/mark.svg" alt=""></span>
+      <span><b>مفتاح حوشك</b><small>عقارات للبيع والإيجار</small></span>
+    </a>
+    <a class="btn" id="topCall" aria-label="اتصل بنا">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#0B7A5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+      <span id="topPhone"></span>
+    </a>
+  </div>
+</header>
+
+<div id="demoBar" class="wrap hidden"><div class="msg ok" style="margin-top:12px">وضع تجريبي: العروض اللي تشوفها أمثلة بس، لين يتربط الموقع بقاعدة البيانات.</div></div>
+
+<!-- الصفحة الرئيسية -->
+<section id="home" class="wrap">
+  <div class="filters">
+    <label class="search">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#5B6B73" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="ابحث بالمنطقة أو الحي أو رقم العرض…" aria-label="بحث">
+    </label>
+    <select id="city" class="sel" aria-label="المدينة"><option value="">كل المدن</option></select>
+    <div class="seg" id="deal" role="group" aria-label="نوع العرض">
+      <button data-v="" class="on">الكل</button><button data-v="sale">بيع</button><button data-v="rent">إيجار</button>
+    </div>
+    <select id="sort" class="sel" aria-label="الترتيب">
+      <option value="new">الأحدث</option><option value="low">السعر: من الأقل</option><option value="high">السعر: من الأعلى</option>
+    </select>
+  </div>
+  <div class="chips" id="kinds" style="padding-bottom:14px"></div>
+  <div class="main">
+    <div class="mapbox"><div id="map" style="height:100%"></div></div>
+    <div class="list" id="list"></div>
+  </div>
+</section>
+
+<!-- صفحة العقار -->
+<section id="detail" class="hidden"></section>
+
+<a class="fab" id="fab" target="_blank" rel="noopener">
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
+  واتساب
+</a>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
