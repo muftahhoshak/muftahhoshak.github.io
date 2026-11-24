@@ -217,3 +217,14 @@ body[data-kind="land"]::before{background-image:url("bg-land.svg")}
 body[data-kind="shop"]::before{background-image:url("bg-shop.svg")}
 body[data-kind="office"]::before{background-image:url("bg-office.svg")}
 body[data-kind="farm"]::before{background-image:url("bg-farm.svg")}
+
+/* صور حقيقية (لو موجودة) فوق الرسومات */
+body::before{background-image:url("bg-city.jpg"),url("bg.svg");background-size:cover,cover;background-position:center,center bottom}
+body[data-kind="house"]::before{background-image:url("bg-house.jpg"),url("bg-house.svg")}
+body[data-kind="villa"]::before{background-image:url("bg-villa.jpg"),url("bg-villa.svg")}
+body[data-kind="land"]::before{background-image:url("bg-land.jpg"),url("bg-land.svg")}
+body[data-kind="shop"]::before{background-image:url("bg-shop.jpg"),url("bg-shop.svg")}
+body[data-kind="office"]::before{background-image:url("bg-office.jpg"),url("bg-office.svg")}
+body[data-kind="farm"]::before{background-image:url("bg-farm.jpg"),url("bg-farm.svg")}
+body::before{opacity:.32;filter:saturate(.85) blur(2px)}
+@media (max-width:640px){body::before{background-size:cover,200% auto}}
