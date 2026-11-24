@@ -228,3 +228,16 @@ body[data-kind="office"]::before{background-image:url("bg-office.jpg"),url("bg-o
 body[data-kind="farm"]::before{background-image:url("bg-farm.jpg"),url("bg-farm.svg")}
 body::before{opacity:.32;filter:saturate(.85) blur(2px)}
 @media (max-width:640px){body::before{background-size:cover,200% auto}}
+body::before{opacity:.5;filter:none}
+body::after{background:linear-gradient(180deg,rgba(246,248,247,.55) 0%,rgba(246,248,247,.25) 50%,rgba(246,248,247,0) 85%)}
+
+/* ---------- خلفيات بصور حقيقية ---------- */
+body::before{background-image:url("bg-city.jpg");background-size:cover;background-position:center;opacity:.42;filter:saturate(.95)}
+body[data-kind="house"]::before{background-image:url("bg-house.jpg")}
+body[data-kind="villa"]::before{background-image:url("bg-villa.jpg")}
+body[data-kind="land"]::before{background-image:url("bg-land.jpg")}
+body[data-kind="shop"]::before{background-image:url("bg-shop.jpg")}
+body[data-kind="office"]::before{background-image:url("bg-office.jpg")}
+body[data-kind="farm"]::before{background-image:url("bg-farm.jpg")}
+body::after{background:linear-gradient(180deg,rgba(246,248,247,.6) 0%,rgba(246,248,247,.35) 45%,rgba(246,248,247,.15) 100%)}
+@media (max-width:640px){body::before{background-size:cover;background-position:center}}
