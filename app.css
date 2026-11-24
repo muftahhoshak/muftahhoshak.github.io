@@ -241,3 +241,8 @@ body[data-kind="office"]::before{background-image:url("bg-office.jpg")}
 body[data-kind="farm"]::before{background-image:url("bg-farm.jpg")}
 body::after{background:linear-gradient(180deg,rgba(246,248,247,.6) 0%,rgba(246,248,247,.35) 45%,rgba(246,248,247,.15) 100%)}
 @media (max-width:640px){body::before{background-size:cover;background-position:center}}
+/* الصور أوضح */
+body::before{opacity:.8;filter:none}
+body::after{background:linear-gradient(180deg,rgba(246,248,247,.35) 0%,rgba(246,248,247,.12) 40%,rgba(246,248,247,0) 100%)}
+.card,.panel,.search,select.sel,.chip,.spec,.owner,.paperbox,.empty,.btn:not(.primary):not(.dark):not(.wa):not(.danger),.round{background:rgba(255,255,255,.88)!important}
+.count{background:rgba(255,255,255,.85);border-radius:8px;padding:2px 10px;justify-self:start;width:max-content}
