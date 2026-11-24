@@ -148,7 +148,7 @@
           <div class="row"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}">${ICON.nav} الاتجاهات</a>
           <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lng}">خرائط جوجل</a></div>` : ""}
           <div class="owner">
-            <span class="brand"><span class="mark"><img src="icons/mark.svg" alt=""></span></span>
+            <span class="brand"><span class="mark"><img src="mark.svg" alt=""></span></span>
             <div style="flex:1"><b style="font-family:Cairo,sans-serif">مفتاح حوشك</b><div style="font-size:12px;color:#5B6B73">نُشر بتاريخ ${date(l.created_at)} · رقم العرض ${code(l)}</div></div>
             <span class="tag" style="${closed ? "background:#EEF1F0;color:#5B6B73" : ""}">${STATUS[l.status]}</span>
           </div>
