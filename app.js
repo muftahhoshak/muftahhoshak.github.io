@@ -201,6 +201,8 @@
     await load();
     render(); route();
     window.addEventListener("hashchange", route);
+    // منع حفظ الصور بالضغط المطوّل أو الزر اليمين
+    document.addEventListener("contextmenu", (e) => { if (e.target.closest(".slides, .ph, .gallery")) e.preventDefault(); });
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
   })();
 })();

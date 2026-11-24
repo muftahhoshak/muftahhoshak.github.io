@@ -111,12 +111,39 @@
         const s = Math.min(1, max / Math.max(img.width, img.height));
         const cv = document.createElement("canvas");
         cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
-        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
-        cv.toBlob((b) => ok(b), "image/jpeg", 0.82);
+        const ctx = cv.getContext("2d");
+        ctx.drawImage(img, 0, 0, cv.width, cv.height);
+        watermark(ctx, cv.width, cv.height).then(() => cv.toBlob((b) => ok(b), "image/jpeg", 0.82));
       };
       img.src = URL.createObjectURL(file);
     });
   }
+  // علامة مفتاح حوشك على كل صورة: باهتة في النص + شريط فيه الاسم والرقم تحت
+  let markImg;
+  async function watermark(ctx, w, h) {
+    try { await document.fonts.load("800 40px Cairo"); } catch (e) {}
+    if (!markImg) markImg = await new Promise((res) => { const m = new Image(); m.onload = () => res(m); m.onerror = () => res(null); m.src = "mark.svg"; });
+    const u = Math.min(w, h);
+    if (markImg) {
+      const mw = u * 0.45, mh = mw * 40 / 64;
+      ctx.globalAlpha = 0.18;
+      ctx.drawImage(markImg, (w - mw) / 2, (h - mh) / 2, mw, mh);
+      ctx.globalAlpha = 1;
+    }
+    const fs = Math.max(16, Math.round(u * 0.045)), pad = Math.round(fs * 0.6);
+    const label = "مفتاح حوشك  ·  " + C.PHONE_LOCAL;
+    ctx.font = `800 ${fs}px Cairo, sans-serif`;
+    ctx.direction = "rtl";
+    const tw = ctx.measureText(label).width;
+    const bw = tw + pad * 2, bh = fs + pad * 1.4;
+    ctx.fillStyle = "rgba(11,122,94,0.82)";
+    ctx.fillRect(w - bw - pad, h - bh - pad, bw, bh);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "right";
+    ctx.fillText(label, w - pad * 2, h - pad - bh / 2);
+  }
+
   async function upload() {
     const out = [];
     for (const p of photos) {
