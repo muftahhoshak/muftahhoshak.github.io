@@ -1,8 +1,12 @@
 // لوحة الإدارة: دخول، إضافة وتعديل العروض، الصور، الخريطة
 (function () {
-  const { C, db, configured, KINDS, DEALS, STATUS, priceText, code, esc, toast } = window.M;
+  const { C, db, configured, KINDS, DEALS, STATUS, PAPERS, priceText, code, esc, toast } = window.M;
   const $ = (s) => document.querySelector(s);
-  const show = (id) => ["#loginBox", "#listBox", "#formBox"].forEach((x) => $(x).classList.toggle("hidden", x !== id));
+  const show = (id) => {
+    ["#loginBox", "#listBox", "#formBox", "#reqBox"].forEach((x) => $(x).classList.toggle("hidden", x !== id));
+    $("#tabs").classList.toggle("hidden", !(id === "#listBox" || id === "#reqBox"));
+    $("#tabs").querySelectorAll("button").forEach((b) => b.classList.toggle("on", (b.dataset.t === "requests") === (id === "#reqBox")));
+  };
 
   let rows = [], editing = null, photos = [], pick, pickMarker;
   // photos: [{url}] صور مرفوعة، أو [{file, preview}] صور جديدة
@@ -23,8 +27,47 @@
     const { data } = await db.auth.getSession();
     if (!data.session) { show("#loginBox"); return; }
     $("#logout").classList.remove("hidden");
-    await loadRows(); show("#listBox");
+    await loadRows(); show("#listBox"); loadReqs();
   }
+
+  // ---------- طلبات الزباين ----------
+  const RS = { new: "جديد", contacted: "تواصلت معاه", done: "انتهى" };
+  let reqs = [];
+  $("#tabs").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.t === "requests") { loadReqs(); show("#reqBox"); } else show("#listBox"); };
+  async function loadReqs() {
+    const { data, error } = await db.from("requests").select("*").order("created_at", { ascending: false });
+    if (error) { $("#reqRows").innerHTML = `<div class="msg err">ما قدرناش نجيبوا الطلبات. تأكد إنك شغّلت ملف التحديث في Supabase.</div>`; return; }
+    reqs = data || [];
+    const n = reqs.filter((r) => r.status === "new").length;
+    $("#newReq").textContent = n; $("#newReq").classList.toggle("hidden", !n);
+    $("#reqRows").innerHTML = reqs.map((r) => {
+      const intl = "218" + r.phone.slice(1);
+      const want = `${r.deal === "rent" ? "يبي يأجّر" : "يبي يشري"} ${KINDS[r.kind] || r.kind} في ${esc(r.city)}${r.area ? " · " + esc(r.area) : ""}`;
+      const match = rows.filter((l) => l.status === "available" && l.deal === r.deal && l.kind === r.kind && l.city === r.city && (!r.budget || Number(l.price) <= Number(r.budget))).length;
+      return `<div class="panel" style="gap:8px;${r.status === "new" ? "border-color:#0B7A5E" : ""}">
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${esc(r.name)}</b><span style="font-size:12px;color:#5B6B73">${M.date(r.created_at)}</span></div>
+        <div style="font-size:14px">${want}</div>
+        <div style="font-size:13px;color:#5B6B73">الميزانية: ${r.budget ? M.money(r.budget) + " د.ل" : "ما حددش"}${r.notes ? " · " + esc(r.notes) : ""}</div>
+        ${match ? `<div class="msg ok" style="padding:6px 10px;font-size:13px">عندك ${match} عرض متاح يناسبه</div>` : ""}
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <a class="btn mini dark" href="tel:+${intl}">اتصال ${esc(r.phone)}</a>
+          <a class="btn mini primary" target="_blank" rel="noopener" href="https://wa.me/${intl}?text=${encodeURIComponent("السلام عليكم " + r.name + "، معاك مفتاح حوشك بخصوص طلبك على العقار.")}">واتساب</a>
+          <select class="mini" data-rs="${r.id}" style="border:1px solid #DDE3E0;border-radius:10px">${Object.entries(RS).map(([k, v]) => `<option value="${k}" ${r.status === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+          <button class="btn mini danger" data-rdel="${r.id}">حذف</button>
+        </div></div>`;
+    }).join("") || `<div class="empty">ما فيش طلبات لين توا.</div>`;
+  }
+  $("#reqRows").onchange = async (e) => {
+    const id = e.target.dataset.rs; if (!id) return;
+    const { error } = await db.from("requests").update({ status: e.target.value }).eq("id", id);
+    toast(error ? "ما تحفظش" : "تحدّث الطلب"); loadReqs();
+  };
+  $("#reqRows").onclick = async (e) => {
+    const id = e.target.dataset.rdel; if (!id) return;
+    if (!confirm("تحذف الطلب هذا؟")) return;
+    const { error } = await db.from("requests").delete().eq("id", id);
+    toast(error ? "ما انحذفش" : "انحذف الطلب"); loadReqs();
+  };
 
   // ---------- القائمة ----------
   async function loadRows() {
@@ -71,7 +114,7 @@
   }
   $("#city").addEventListener("change", () => { $("#area").value = ""; fillAreas(); });
   $("#deal").onchange = () => $("#periodBox").classList.toggle("hidden", $("#deal").value !== "rent");
-  const FIELDS = ["title", "deal", "kind", "city", "area", "price", "rent_period", "size_m2", "rooms", "baths", "floor", "description"];
+  const FIELDS = ["title", "deal", "kind", "city", "area", "price", "rent_period", "size_m2", "rooms", "baths", "floor", "description", "papers"];
 
   function openForm(r) {
     editing = r;
@@ -193,6 +236,7 @@
     const price = num("price"); if (!price || price <= 0 || isNaN(price)) errs.push("السعر (رقم صحيح)");
     const size = num("size_m2"); if (!size || size <= 0 || isNaN(size)) errs.push("المساحة");
     ["rooms", "baths", "floor"].forEach((k) => { const v = num(k); if (v != null && (isNaN(v) || v < 0)) errs.push({ rooms: "الغرف", baths: "الحمامات", floor: "الدور" }[k]); });
+    if (!$("#papers").value) errs.push("أوراق العقار");
     if (!pickMarker) errs.push("مكان العقار على الخريطة");
     if (errs.length) { $("#formMsg").innerHTML = `<div class="msg err">ناقص أو غلط: ${errs.join("، ")}</div>`; return; }
 
@@ -203,7 +247,7 @@
         title: $("#title").value.trim(), deal: $("#deal").value, kind: $("#kind").value, city: $("#city").value,
         area: $("#area").value.trim(), price, rent_period: $("#deal").value === "rent" ? $("#rent_period").value : null,
         size_m2: size, rooms: num("rooms"), baths: num("baths"), floor: num("floor"),
-        description: $("#description").value.trim(), featured: $("#featured").checked,
+        description: $("#description").value.trim(), papers: $("#papers").value, featured: $("#featured").checked,
         lat: +ll.lat.toFixed(6), lng: +ll.lng.toFixed(6), images: await upload()
       };
       if (editing) {

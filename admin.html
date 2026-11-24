@@ -36,6 +36,17 @@
     <button class="btn primary" type="submit">دخول</button>
   </form>
 
+  <div id="tabs" class="seg hidden" style="align-self:flex-start;margin-bottom:14px;display:inline-flex">
+    <button type="button" data-t="listings" class="on">العروض</button>
+    <button type="button" data-t="requests">طلبات الزباين <span id="newReq" style="background:#B42318;color:#fff;border-radius:9px;padding:0 7px;font-size:12px;margin-right:4px" class="hidden"></span></button>
+  </div>
+
+  <!-- طلبات الزباين -->
+  <section id="reqBox" class="hidden" style="display:flex;flex-direction:column;gap:14px">
+    <h1 style="margin:0;font-size:20px">طلبات الزباين <span style="font-size:14px;color:#5B6B73;font-weight:400">(اللي طلبوا عقار من "اطلب عقارك")</span></h1>
+    <div id="reqRows" style="display:flex;flex-direction:column;gap:10px"></div>
+  </section>
+
   <!-- قائمة العروض -->
   <section id="listBox" class="hidden" style="display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
@@ -74,6 +85,7 @@
         <label class="f">عدد الغرف<input id="rooms" inputmode="numeric"></label>
         <label class="f">عدد الحمامات<input id="baths" inputmode="numeric"></label>
         <label class="f">الدور (0 = أرضي)<input id="floor" inputmode="numeric"></label>
+        <label class="f">أوراق العقار <span class="req">*</span><select id="papers"><option value="">— اختار —</option><option value="registered">مسجّل في السجل العقاري</option><option value="pending">قيد التسجيل</option><option value="customary">عقد عرفي</option></select></label>
       </div>
       <label class="f">الوصف<textarea id="description" maxlength="1500" placeholder="التشطيب، المميزات، القرب من الخدمات…"></textarea></label>
       <label style="display:flex;align-items:center;gap:8px;font-size:14px"><input type="checkbox" id="featured" style="width:20px;height:20px"> عرض مميز (يطلع في الأول وعليه علامة "مميز")</label>

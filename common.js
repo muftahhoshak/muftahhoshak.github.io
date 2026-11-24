@@ -6,6 +6,11 @@
 
   const KINDS = { apartment: "شقة", house: "بيت", villa: "فيلا", land: "أرض", shop: "محل", office: "مكتب", farm: "مزرعة" };
   const DEALS = { sale: "للبيع", rent: "للإيجار" };
+  const PAPERS = {
+    registered: { t: "مسجّل في السجل العقاري", s: "أوراق مسجّلة", c: "ok" },
+    pending: { t: "قيد التسجيل", s: "قيد التسجيل", c: "wait" },
+    customary: { t: "عقد عرفي", s: "عقد عرفي", c: "note" }
+  };
   const STATUS = { available: "متاح", sold: "مُباع", rented: "مؤجَّر" };
 
   const nf = new Intl.NumberFormat("en-US");
@@ -39,5 +44,5 @@
   }
   function telLink() { return "tel:+" + C.PHONE_INTL; }
 
-  window.M = { C, db, configured, KINDS, DEALS, STATUS, money, priceText, shortPrice, code, date, esc, toast, waLink, telLink };
+  window.M = { C, db, configured, KINDS, DEALS, STATUS, PAPERS, money, priceText, shortPrice, code, date, esc, toast, waLink, telLink };
 })();

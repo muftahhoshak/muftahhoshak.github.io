@@ -1,5 +1,5 @@
 // يخلي الموقع يفتح بسرعة ويتثبت كتطبيق
-const V = "muftah-v4";
+const V = "muftah-v5";
 const SHELL = ["./", "index.html", "app.css", "app.js", "common.js", "config.js", "mark.svg", "icon-192.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(V).then((c) => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== V).map((k) => caches.delete(k))))); self.clients.claim(); });

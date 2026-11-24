@@ -1,6 +1,6 @@
 // صفحة الزوار: العروض + الخريطة + صفحة العقار
 (function () {
-  const { C, db, configured, KINDS, DEALS, STATUS, priceText, shortPrice, code, date, esc, toast, waLink, telLink } = window.M;
+  const { C, db, configured, KINDS, DEALS, STATUS, PAPERS, priceText, shortPrice, code, date, esc, toast, waLink, telLink } = window.M;
   const $ = (s) => document.querySelector(s);
 
   const ICON = {
@@ -82,13 +82,15 @@
         <h3>${esc(l.title)}</h3>
         <span class="meta">${esc(l.city)} · ${esc(l.area || "")}${l.size_m2 ? " · " + l.size_m2 + " م²" : ""}</span>
         <span class="price">${priceText(l)}</span>
+        ${l.papers && PAPERS[l.papers] ? `<span class="paper ${PAPERS[l.papers].c}">${PAPERS[l.papers].s}</span>` : ""}
       </div></a>`;
   }
 
   function render() {
     const r = filtered();
+    const cta = `<div class="reqcta"><div><b>ما لقيتش اللي تبيه؟</b><span>قولّنا شنو تدور عليه، ونتصلوا بيك أول ما يجي.</span></div><a class="btn" href="#/request">اطلب عقارك</a></div>`;
     $("#list").innerHTML = `<div class="count">${r.length} عرض</div>` +
-      (r.length ? r.map(cardHTML).join("") : `<div class="empty">ما فيش عروض بالبحث هذا. جرّب تغيّر الفلاتر، أو <a href="${waLink("نبحث على عقار")}" target="_blank" rel="noopener" style="color:#0B6A52;font-weight:600">كلّمنا واتساب</a> ونلقولك اللي تبيه.</div>`);
+      (r.length ? r.map(cardHTML).join("") + cta : `<div class="empty">ما فيش عروض بالبحث هذا. جرّب تغيّر الفلاتر.</div>` + cta);
     drawPins(r);
   }
 
@@ -155,6 +157,7 @@
           <div class="specs">
             ${spec(l.rooms, "غرف")}${spec(l.baths, "حمام")}${spec(l.size_m2, "م²")}${spec(l.floor === 0 ? "أرضي" : l.floor, "الدور")}
           </div>
+          ${l.papers && PAPERS[l.papers] ? `<div class="paperbox"><span class="paper ${PAPERS[l.papers].c}" style="font-size:12px">${PAPERS[l.papers].s}</span><div><b>أوراق العقار: ${PAPERS[l.papers].t}</b><span>اسأل على التفاصيل والمستندات لما تتصل بينا.</span></div></div>` : ""}
           ${l.description ? `<p class="desc">${esc(l.description)}</p>` : ""}
           ${l.lat && l.lng ? `<h2 style="margin:0;font-size:17px">الموقع</h2><div class="minimap" id="minimap"></div>
           <div class="row"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}">${ICON.nav} الاتجاهات</a>
@@ -185,19 +188,48 @@
   }
   function spec(v, t) { return `<div class="spec"><b>${v == null || v === "" ? "—" : esc(v)}</b><span>${t}</span></div>`; }
 
+  // ---------- اطلب عقارك ----------
+  function initRequest() {
+    C.CITIES.forEach((c) => $("#rCity").insertAdjacentHTML("beforeend", `<option>${esc(c)}</option>`));
+    Object.entries(KINDS).forEach(([k, v]) => $("#rKind").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`));
+    const fill = () => { $("#rAreaList").innerHTML = ((C.AREAS && C.AREAS[$("#rCity").value]) || []).map((a) => `<option value="${esc(a)}"></option>`).join(""); };
+    $("#rCity").onchange = fill; fill();
+    $("#reqForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const phone = $("#rPhone").value.replace(/\D/g, "").replace(/^218/, "0").replace(/^9/, "09");
+      const budget = $("#rBudget").value.replace(/[^\d]/g, "");
+      const errs = [];
+      if ($("#rName").value.trim().length < 2) errs.push("اسمك");
+      if (!/^09[0-9]{8}$/.test(phone)) errs.push("رقم الموبايل (10 أرقام يبدا بـ 09)");
+      if (errs.length) { $("#rMsg").innerHTML = `<div class="msg err">ناقص أو غلط: ${errs.join("، ")}</div>`; return; }
+      if (!configured) { $("#rMsg").innerHTML = `<div class="msg ok">وضع تجريبي: الطلب ما تبعتش.</div>`; return; }
+      $("#rSend").disabled = true; $("#rSend").textContent = "قاعد يبعت…";
+      const { error } = await db.from("requests").insert({
+        name: $("#rName").value.trim(), phone, deal: $("#rDeal").value, kind: $("#rKind").value, city: $("#rCity").value,
+        area: $("#rArea").value.trim() || null, budget: budget ? Number(budget) : null, notes: $("#rNotes").value.trim() || null
+      });
+      $("#rSend").disabled = false; $("#rSend").textContent = "ابعت الطلب";
+      if (error) { $("#rMsg").innerHTML = `<div class="msg err">ما تبعتش الطلب. تأكد من الإنترنت وحاول مرة ثانية، أو كلّمنا واتساب.</div>`; return; }
+      $("#reqForm").reset(); fill();
+      $("#rMsg").innerHTML = `<div class="msg ok">وصلنا طلبك ✅ أول ما يجينا عقار يناسبك نتصلوا بيك.</div>`;
+    };
+  }
+
   // ---------- التنقل ----------
   function route() {
     const m = location.hash.match(/^#\/p\/(\d+)/);
-    const onDetail = !!m;
-    $("#home").classList.toggle("hidden", onDetail);
+    const onDetail = !!m, onReq = location.hash === "#/request";
+    $("#home").classList.toggle("hidden", onDetail || onReq);
     $("#detail").classList.toggle("hidden", !onDetail);
+    $("#request").classList.toggle("hidden", !onReq);
     $("#fab").classList.toggle("hidden", onDetail);
+    if (onReq) { $("#rMsg").innerHTML = ""; window.scrollTo(0, 0); document.title = "اطلب عقارك | مفتاح حوشك"; return; }
     if (onDetail) { showDetail(m[1]); window.scrollTo(0, 0); }
     else { document.title = "مفتاح حوشك | عقارات للبيع والإيجار في ليبيا"; if (map) setTimeout(() => map.invalidateSize(), 50); }
   }
 
   (async function start() {
-    initFilters(); initMap();
+    initFilters(); initMap(); initRequest();
     await load();
     render(); route();
     window.addEventListener("hashchange", route);
