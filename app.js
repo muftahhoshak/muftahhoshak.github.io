@@ -95,6 +95,7 @@
   // ---------- الخريطة ----------
   function tiles(m) {
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(m);
+    m.attributionControl.setPrefix(false);
   }
   function pinIcon(l, on) {
     return L.divIcon({ className: "", html: `<span class="pin ${on ? "on" : ""}">${l.deal === "rent" ? shortPrice(l.price) + "/ش" : shortPrice(l.price)}</span>`, iconSize: [0, 0] });

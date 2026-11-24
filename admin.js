@@ -138,6 +138,7 @@
     if (!pick) {
       pick = L.map("pickmap").setView(C.MAP_CENTER, C.MAP_ZOOM);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(pick);
+      pick.attributionControl.setPrefix(false);
       pick.on("click", (e) => setPin(e.latlng));
     }
     if (pickMarker) { pickMarker.remove(); pickMarker = null; }
